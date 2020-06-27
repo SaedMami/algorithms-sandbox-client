@@ -1,0 +1,16 @@
+.td {
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  color: #dddddd;
+}
+
+.selected {
+  background-color: red;
+}
+
+.unselected {
+  background-color: royalblue;
+}
