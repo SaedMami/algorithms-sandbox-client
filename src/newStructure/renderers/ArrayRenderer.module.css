@@ -11,6 +11,10 @@
   background-color: red;
 }
 
-.unselected {
+.clear {
   background-color: royalblue;
+}
+
+.marked {
+  background-color: sienna;
 }

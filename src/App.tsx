@@ -1,12 +1,20 @@
 import React from "react";
 import "./App.css";
-import BubbleSort from "./Components/sort/BubbleSort";
+import ArrayVisualisation from "./newStructure/visualisation/ArrayVisualisation";
+import {
+  bubbleSort,
+  selectionSort,
+  quickSort,
+} from "./newStructure/algorthims/ArrayAlgorithms";
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <BubbleSort></BubbleSort>
+        {/* <ArrayVisualisation algorthim={bubbleSort}></ArrayVisualisation>
+        <br></br>
+        <ArrayVisualisation algorthim={selectionSort}></ArrayVisualisation> */}
+        <ArrayVisualisation algorthim={quickSort}></ArrayVisualisation>
       </div>
     );
   }
