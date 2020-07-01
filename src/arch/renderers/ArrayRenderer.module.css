@@ -1,0 +1,37 @@
+.table {
+  text-align: center;
+  line-height: 0.6rem;
+}
+
+.tdElement {
+  border-spacing: 0;
+  background-color: #395e66;
+  border: 0.0075rem solid #dddddd;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #dddddd;
+  margin: 0;
+}
+
+.tdIndex {
+  font-size: 0.5rem;
+}
+
+.tdPointer {
+  font-size: 0.5rem;
+  padding: 0;
+  width: 0.1rem;
+  height: 0.1rem;
+}
+
+.selected {
+  background-color: red;
+}
+
+.clear {
+  background-color: royalblue;
+}
+
+.marked {
+  background-color: sienna;
+}
