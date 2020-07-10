@@ -23,15 +23,3 @@
   width: 0.1rem;
   height: 0.1rem;
 }
-
-.selected {
-  background-color: red;
-}
-
-.clear {
-  background-color: royalblue;
-}
-
-.marked {
-  background-color: sienna;
-}
