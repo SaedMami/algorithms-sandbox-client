@@ -6,6 +6,7 @@ import {
   ArrayMarkerFrame,
   ArrayFrame,
 } from "./types/ArrayTypes";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 
 const ArrayRenderer = (props: ArrayFrame) => {
   return (
@@ -62,9 +63,13 @@ const RenderArrayPointers = (
       <tr>
         {_.range(0, length).map((i) => {
           return (
-            <td className={style.tdPointer} key={`${i}`}>
+            <td className={style.tdPointer} key={i}>
               {Array.from(pointers).map(([key, pointer]) =>
-                pointer.position === i ? <a>arrow up</a> : ""
+                pointer.position === i ? (
+                  <ArrowUpwardIcon key={key} fontSize="small" />
+                ) : (
+                  ""
+                )
               )}
             </td>
           );
@@ -75,7 +80,7 @@ const RenderArrayPointers = (
           return (
             <td className={style.tdPointer} key={`${i}`}>
               {Array.from(pointers).map(([key, pointer]) =>
-                pointer.position === i ? key : ""
+                pointer.position === i ? key + " " : ""
               )}
             </td>
           );

@@ -47,9 +47,13 @@ export class ArrayTracer {
   }
 
   createPointer(key: string) {
-    const frame: ArrayPointerFrame = { position: 0 };
+    const frame: ArrayPointerFrame = { position: -1 };
     this.currentPointers.set(key, frame);
     return new ArrayPointer(frame);
+  }
+
+  clearPointer(key: string) {
+    this.currentPointers.delete(key);
   }
 }
 

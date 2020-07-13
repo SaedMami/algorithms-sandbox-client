@@ -1,24 +1,31 @@
 import React from "react";
 import "./App.css";
 import AlgorithmPlayer from "./arch/array/AlgorithmPlayer";
-import { bubbleSort } from "./arch/array/ArrayAlgorithms";
 import AppHeader from "./AppHeader";
 import AlgorithmsMenu from "./AlgorithmsMenu";
 import { Grid, Container } from "@material-ui/core";
 import { ArrayTracer } from "./arch/array/ArrayTracer";
+import { generateRandomArray, id } from "./arch/util.ts/RandomUtils";
+import { bubbleSort } from "./arch/array/ArrayAlgorithms";
 
-class App extends React.Component {
-  constructor(props: any) {
+type AppProps = {
+  algorithm: (toSort: number[]) => ArrayTracer;
+};
+
+class App extends React.Component<{}, AppProps> {
+  constructor(props: AppProps) {
     super(props);
-    this.state = {
-      tracer: null,
-    };
+    this.state = { algorithm: bubbleSort };
   }
-  onBuildClicked = (tracer: ArrayTracer) => {
-    this.setState({ tracer: tracer });
+  assignTracerAlgo = (algo: (toSort: number[]) => ArrayTracer) => {
+    console.log("setting state");
+    this.setState({ algorithm: algo });
   };
 
   render() {
+    console.log("render App");
+    const toSort = generateRandomArray(5, 50);
+    const tracer = this.state.algorithm(toSort);
     return (
       <div className="App">
         <AppHeader></AppHeader>
@@ -37,12 +44,14 @@ class App extends React.Component {
               style={{ margin: "5em auto" }}
             >
               <AlgorithmPlayer
-                tracer={bubbleSort([9, 8, 7, 6, 5, 4, 3, 2, 1])}
+                frames={tracer.getFrames()}
+                rendererType={tracer.getRendererType()}
+                key={id(tracer)}
               ></AlgorithmPlayer>
             </Grid>
 
             <Grid item xs={3} style={{ margin: "5em auto" }}>
-              <AlgorithmsMenu></AlgorithmsMenu>
+              <AlgorithmsMenu onBuild={this.assignTracerAlgo}></AlgorithmsMenu>
             </Grid>
           </Grid>
         </Container>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   List,
   ListItem,
@@ -8,22 +8,42 @@ import {
   Container,
 } from "@material-ui/core";
 import BuildIcon from "@material-ui/icons/Build";
+import {
+  quickSort,
+  bubbleSort,
+  selectionSort,
+} from "./arch/array/ArrayAlgorithms";
 
-const AlgorithmsMenu = () => {
+const options = [
+  { name: "Bubble Sort", algo: bubbleSort },
+  { name: "Quick Sort", algo: quickSort },
+  { name: "Selection Sort", algo: selectionSort },
+];
+
+const AlgorithmsMenu = (props: any) => {
+  const [selected, setSelected] = useState(0);
+
+  const onBuildClicked = () => {
+    const algo = options[selected].algo;
+    props.onBuild(algo);
+  };
+
   return (
     <div>
       <Container maxWidth="sm">
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem button selected>
-            <ListItemText primary="Bubble Sort" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText primary="Quick Sort" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Selection Sort" />
-          </ListItem>
+          {options.map((option, index) => {
+            return (
+              <ListItem
+                button
+                selected={index === selected}
+                onClick={() => setSelected(index)}
+                key={index}
+              >
+                <ListItemText primary={option.name} />
+              </ListItem>
+            );
+          })}
           <Divider />
         </List>
         <Button
@@ -31,6 +51,7 @@ const AlgorithmsMenu = () => {
           variant="contained"
           color="primary"
           startIcon={<BuildIcon />}
+          onClick={onBuildClicked}
         >
           Build
         </Button>

@@ -1,42 +1,41 @@
 import { useState, useEffect } from "react";
 import ArrayRenderer from "./ArrayRenderer";
 import React from "react";
-import { ArrayTracer } from "./ArrayTracer";
 import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
 import PauseRoundedIcon from "@material-ui/icons/PauseRounded";
 import FastRewindRoundedIcon from "@material-ui/icons/FastRewindRounded";
 import FastForwardRoundedIcon from "@material-ui/icons/FastForwardRounded";
 import { Card, CardContent, IconButton, Grid } from "@material-ui/core";
+import { ArrayFrame } from "./types/ArrayTypes";
 
 export type AlgorithmPlayerProps = {
-  tracer: ArrayTracer;
+  frames: Array<ArrayFrame>;
+  rendererType: string;
 };
 
 const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
   const [currentFrame, setCurrentFrame] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const frames = props.tracer.getFrames();
-
   useEffect(() => {
-    if (isPlaying && currentFrame < frames.length - 1) {
+    if (isPlaying && currentFrame < props.frames.length - 1) {
       const timeout = setTimeout(() => {
         setCurrentFrame(currentFrame + 1);
-      }, 50);
+      }, 100);
       return () => clearTimeout(timeout);
     } else {
       setIsPlaying(false);
     }
-  }, [currentFrame, isPlaying, frames.length]);
+  }, [currentFrame, isPlaying, props.frames.length]);
 
-  const frameToRender = frames[currentFrame];
+  const frameToRender = props.frames[currentFrame];
 
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item>
         <Card>
           <CardContent>
-            {createRenderer(props.tracer.getRendererType())(frameToRender)}
+            {createRenderer(props.rendererType)(frameToRender)}
           </CardContent>
         </Card>
       </Grid>
@@ -57,7 +56,7 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
                 setIsPlaying(false);
               } else {
                 setIsPlaying(true);
-                if (currentFrame === frames.length - 1) {
+                if (currentFrame === props.frames.length - 1) {
                   setCurrentFrame(0);
                 }
               }
@@ -67,7 +66,9 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
           </IconButton>
           <IconButton
             onClick={() => {
-              setCurrentFrame(Math.min(currentFrame + 1, frames.length - 1));
+              setCurrentFrame(
+                Math.min(currentFrame + 1, props.frames.length - 1)
+              );
             }}
           >
             <FastForwardRoundedIcon />

@@ -3,8 +3,8 @@ import { ArrayTracer } from "./ArrayTracer";
 export const bubbleSort = (toSort: Array<number>): ArrayTracer => {
   let data = [...toSort];
   const tracer = new ArrayTracer(data, "dummy");
-  const current = tracer.createMarkerTracer("current", "red");
-  const sorted = tracer.createMarkerTracer("sorted", "pink");
+  const current = tracer.createMarkerTracer("current", "#8594c9");
+  const sorted = tracer.createMarkerTracer("sorted", "#9c9594");
   tracer.capture();
 
   for (let i = 0; i < data.length; ++i) {
@@ -27,77 +27,110 @@ export const bubbleSort = (toSort: Array<number>): ArrayTracer => {
   return tracer;
 };
 
-// export const selectionSort: ArrayAlgorithm = async (data, manipulator) => {
-//   for (let i = 0; i < data.length - 1; ++i) {
-//     manipulator.select(i);
-//     await sleep();
-//     let min = i;
-//     for (let j = i + 1; j < data.length; ++j) {
-//       manipulator.select(j);
-//       await sleep();
-//       if (data[j] < data[min]) {
-//         min = j;
-//       }
-//       manipulator.deselect(j);
-//     }
-//     swap(data, i, min);
-//     manipulator.deselect(i);
-//     manipulator.mark(i);
-//     await sleep();
-//   }
-//   manipulator.mark(data.length - 1);
-// };
+export const selectionSort = (toSort: Array<number>): ArrayTracer => {
+  let data = [...toSort];
+  const tracer = new ArrayTracer(data, "dummy");
+  const current = tracer.createMarkerTracer("current", "#8594c9");
+  const minMarker = tracer.createMarkerTracer("min", "red");
+  const sorted = tracer.createMarkerTracer("sorted", "grey");
+  const currentPointer = tracer.createPointer("i");
+  tracer.capture();
+  for (let i = 0; i < data.length - 1; ++i) {
+    current.mark(i);
+    currentPointer.point(i);
+    tracer.capture();
+    let min = i;
+    for (let j = i + 1; j < data.length; ++j) {
+      current.mark(j);
+      tracer.capture();
+      if (data[j] < data[min]) {
+        minMarker.unmark(min);
+        min = j;
+        minMarker.mark(min);
+      }
+      current.unmark(j);
+      tracer.capture();
+    }
+    swap(data, i, min);
+    minMarker.unmark(min);
+    current.unmark(i);
+    sorted.mark(i);
+    tracer.capture();
+  }
+  sorted.mark(data.length - 1);
+  tracer.clearPointer("i");
+  tracer.capture();
+  return tracer;
+};
 
-// export const quickSort: ArrayAlgorithm = async (data, manipulator) => {
-//   await quickSortInternal(0, data.length, data, manipulator);
-// };
+export const quickSort = (toSort: Array<number>): ArrayTracer => {
+  const quickSortInternal = (
+    start: number,
+    end: number,
+    data: Array<any>,
+    tracer: ArrayTracer
+  ) => {
+    if (start >= end) {
+      return;
+    }
+    let pivotIndex = end - 1;
+    let i = start;
+    let j = pivotIndex - 1;
 
-// async function quickSortInternal(
-//   start: number,
-//   end: number,
-//   data: Array<any>,
-//   manipulator: ArrayManipulator
-// ) {
-//   if (start >= end) {
-//     return;
-//   }
-//   let pivotIndex = end - 1;
-//   let i = start;
-//   let j = pivotIndex - 1;
+    pivotMarker.mark(pivotIndex);
+    iPointer.point(i);
+    jPointer.point(j);
+    current.mark(i);
+    current.mark(j);
+    tracer.capture();
 
-//   await manipulator.mark(pivotIndex);
-//   await manipulator.select(i);
-//   await manipulator.select(j);
-//   await sleep();
+    while (i <= j) {
+      if (data[i] < data[pivotIndex]) {
+        current.unmark(i);
+        ++i;
+        current.mark(i);
+        iPointer.point(i);
+        tracer.capture();
+      } else {
+        current.unmark(j);
+        --j;
+        current.mark(j);
+        jPointer.point(j);
+        tracer.capture();
+        swap(data, i, j + 1);
+        tracer.capture();
+      }
+    }
+    current.unmark(i);
+    current.unmark(j);
+    tracer.capture();
+    swap(data, pivotIndex, j + 1);
+    pivotMarker.unmark(pivotIndex);
+    pivotIndex = j + 1;
+    pivotMarker.mark(pivotIndex);
+    tracer.capture();
 
-//   while (i <= j) {
-//     if (data[i] < data[pivotIndex]) {
-//       await manipulator.deselect(i);
-//       ++i;
-//       await manipulator.select(i);
-//       await sleep();
-//     } else {
-//       await manipulator.deselect(j);
-//       --j;
-//       await manipulator.select(j);
-//       await sleep();
-//       swap(data, i, j + 1);
-//       await manipulator.update(data);
-//       await sleep();
-//     }
-//   }
-//   await manipulator.deselect(i);
-//   await manipulator.deselect(j);
-//   await sleep();
-//   swap(data, pivotIndex, j + 1);
-//   await sleep();
-//   await manipulator.unmark(pivotIndex);
-//   pivotIndex = j + 1;
-//   await manipulator.mark(pivotIndex);
+    pivotMarker.unmark(pivotIndex);
+    doneMarker.mark(pivotIndex);
+    iPointer.point(-1);
+    jPointer.point(-1);
+    tracer.capture();
 
-//   quickSortInternal(start, pivotIndex, data, manipulator);
-//   quickSortInternal(pivotIndex + 1, end, data, manipulator);
-// }
+    quickSortInternal(start, pivotIndex, data, tracer);
+    quickSortInternal(pivotIndex + 1, end, data, tracer);
+  };
+
+  const data = [...toSort];
+  const tracer = new ArrayTracer(data, "dummy");
+  tracer.capture();
+  const current = tracer.createMarkerTracer("current", "#8594c9");
+  const pivotMarker = tracer.createMarkerTracer("pivot", "red");
+  const doneMarker = tracer.createMarkerTracer("done", "green");
+  const iPointer = tracer.createPointer("i");
+  const jPointer = tracer.createPointer("j");
+  quickSortInternal(0, data.length, data, tracer);
+  return tracer;
+};
 
 function swap(array: Array<any>, i: number, j: number) {
   let temp = array[j];
