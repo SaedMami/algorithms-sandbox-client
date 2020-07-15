@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import AlgorithmPlayer from "./arch/array/AlgorithmPlayer";
 import AppHeader from "./AppHeader";
-import AlgorithmsMenu from "./AlgorithmsMenu";
+import AlgorithmsMenu from "./CodeEditor";
 import { Grid, Container } from "@material-ui/core";
 import { ArrayTracer } from "./arch/array/ArrayTracer";
 import { id } from "./arch/util.ts/RandomUtils";
@@ -53,7 +53,10 @@ class App extends React.Component<any, AppState> {
             </Grid>
 
             <Grid item xs={3} style={{ margin: "5em auto" }}>
-              <AlgorithmsMenu onBuildCode={this.recieveCode}></AlgorithmsMenu>
+              <AlgorithmsMenu
+                initCode=""
+                onBuild={this.recieveCode}
+              ></AlgorithmsMenu>
             </Grid>
           </Grid>
         </Container>
