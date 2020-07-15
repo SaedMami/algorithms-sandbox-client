@@ -5,27 +5,27 @@ import AppHeader from "./AppHeader";
 import AlgorithmsMenu from "./AlgorithmsMenu";
 import { Grid, Container } from "@material-ui/core";
 import { ArrayTracer } from "./arch/array/ArrayTracer";
-import { generateRandomArray, id } from "./arch/util.ts/RandomUtils";
-import { bubbleSort } from "./arch/array/ArrayAlgorithms";
+import { id } from "./arch/util.ts/RandomUtils";
+import { CodeBuilder } from "./CodeBuilder";
 
-type AppProps = {
-  algorithm: (toSort: number[]) => ArrayTracer;
+type AppState = {
+  tracer: ArrayTracer | null;
 };
 
-class App extends React.Component<{}, AppProps> {
-  constructor(props: AppProps) {
+class App extends React.Component<any, AppState> {
+  constructor(props: any) {
     super(props);
-    this.state = { algorithm: bubbleSort };
+    this.state = { tracer: null };
   }
-  assignTracerAlgo = (algo: (toSort: number[]) => ArrayTracer) => {
-    console.log("setting state");
-    this.setState({ algorithm: algo });
+
+  recieveCode = async (code: string) => {
+    const tracer = await CodeBuilder.build(code);
+    console.log(tracer);
+    this.setState({ tracer });
   };
 
   render() {
-    console.log("render App");
-    const toSort = generateRandomArray(5, 50);
-    const tracer = this.state.algorithm(toSort);
+    const { tracer } = this.state;
     return (
       <div className="App">
         <AppHeader></AppHeader>
@@ -43,15 +43,17 @@ class App extends React.Component<{}, AppProps> {
               xs={6}
               style={{ margin: "5em auto" }}
             >
-              <AlgorithmPlayer
-                frames={tracer.getFrames()}
-                rendererType={tracer.getRendererType()}
-                key={id(tracer)}
-              ></AlgorithmPlayer>
+              {tracer && (
+                <AlgorithmPlayer
+                  frames={tracer.getFrames()}
+                  rendererType={tracer.getRendererType()}
+                  key={id(tracer)}
+                ></AlgorithmPlayer>
+              )}
             </Grid>
 
             <Grid item xs={3} style={{ margin: "5em auto" }}>
-              <AlgorithmsMenu onBuild={this.assignTracerAlgo}></AlgorithmsMenu>
+              <AlgorithmsMenu onBuildCode={this.recieveCode}></AlgorithmsMenu>
             </Grid>
           </Grid>
         </Container>

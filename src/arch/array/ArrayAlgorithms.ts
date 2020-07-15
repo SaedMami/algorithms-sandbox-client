@@ -53,6 +53,7 @@ export const selectionSort = (toSort: Array<number>): ArrayTracer => {
     }
     swap(data, i, min);
     minMarker.unmark(min);
+    tracer.capture();
     current.unmark(i);
     sorted.mark(i);
     tracer.capture();
@@ -137,3 +138,28 @@ function swap(array: Array<any>, i: number, j: number) {
   array[j] = array[i];
   array[i] = temp;
 }
+
+let data = [3, 2, 1];
+const tracer = new ArrayTracer(data, "dummy");
+const current = tracer.createMarkerTracer("current", "#8594c9");
+const sorted = tracer.createMarkerTracer("sorted", "#9c9594");
+tracer.capture();
+
+for (let i = 0; i < data.length; ++i) {
+  for (let j = 0; j < data.length - 1 - i; ++j) {
+    current.mark(j);
+    current.mark(j + 1);
+    tracer.capture();
+    if (data[j] > data[j + 1]) {
+      swap(data, j, j + 1);
+      tracer.capture();
+    }
+    current.unmark(j);
+    tracer.capture();
+  }
+
+  current.unmark(data.length - i - 1);
+  sorted.mark(data.length - i - 1);
+  tracer.capture();
+}
+tracer;

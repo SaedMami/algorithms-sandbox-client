@@ -1,37 +1,15 @@
 import React, { useState } from "react";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  Button,
-  Container,
-} from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 import BuildIcon from "@material-ui/icons/Build";
-import {
-  quickSort,
-  bubbleSort,
-  selectionSort,
-} from "./arch/array/ArrayAlgorithms";
-
-const options = [
-  { name: "Bubble Sort", algo: bubbleSort },
-  { name: "Quick Sort", algo: quickSort },
-  { name: "Selection Sort", algo: selectionSort },
-];
 
 const AlgorithmsMenu = (props: any) => {
   const [selected, setSelected] = useState(0);
-
-  const onBuildClicked = () => {
-    const algo = options[selected].algo;
-    props.onBuild(algo);
-  };
+  const [code, setCode] = useState("");
 
   return (
     <div>
       <Container maxWidth="sm">
-        <List component="nav" aria-label="main mailbox folders">
+        {/* <List component="nav" aria-label="main mailbox folders">
           {options.map((option, index) => {
             return (
               <ListItem
@@ -45,13 +23,14 @@ const AlgorithmsMenu = (props: any) => {
             );
           })}
           <Divider />
-        </List>
+        </List> */}
+        <textarea onChange={(e) => setCode(e.target.value)}></textarea>
         <Button
           style={{ marginTop: "1em" }}
           variant="contained"
           color="primary"
           startIcon={<BuildIcon />}
-          onClick={onBuildClicked}
+          onClick={() => props.onBuildCode(code)}
         >
           Build
         </Button>
