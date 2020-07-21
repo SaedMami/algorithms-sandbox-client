@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { Button, Container } from "@material-ui/core";
-import BuildIcon from "@material-ui/icons/Build";
-
+import React from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-min-noconflict/mode-javascript";
-import "ace-builds/src-min-noconflict/theme-monokai";
+import "ace-builds/src-min-noconflict/theme-nord_dark";
 import "ace-builds/src-min-noconflict/ext-language_tools";
 const ace = require("ace-builds/src-noconflict/ace");
 ace.config.set(
@@ -17,45 +14,32 @@ ace.config.setModuleUrl(
 );
 
 export type CodeEditorProps = {
-  onBuild: (code: string) => Promise<void>;
-  initCode: string;
+  onCodeChanged: (code: string) => void;
+  code: string;
 };
 
-const AlgorithmsMenu = (props: CodeEditorProps) => {
-  const [code, setCode] = useState(props.initCode);
-
+const CodeEditor = (props: CodeEditorProps) => {
   return (
-    <div>
-      <Container maxWidth="sm">
-        <AceEditor
-          placeholder="Placeholder Text"
-          mode="javascript"
-          theme="monokai"
-          onChange={(code) => setCode(code)}
-          fontSize={14}
-          showPrintMargin={true}
-          showGutter={true}
-          highlightActiveLine={true}
-          value={props.initCode}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            showLineNumbers: true,
-            tabSize: 2,
-          }}
-        />
-        <Button
-          style={{ marginTop: "1em" }}
-          variant="contained"
-          color="primary"
-          startIcon={<BuildIcon />}
-          onClick={() => props.onBuild(code)}
-        >
-          Build
-        </Button>
-      </Container>
-    </div>
+    <AceEditor
+      style={{ borderRadius: "10px", width: "100%", height: "75vh" }}
+      placeholder="Placeholder Text"
+      mode="javascript"
+      theme="nord_dark"
+      onChange={(code) => props.onCodeChanged(code)}
+      fontSize={18}
+      showPrintMargin={true}
+      showGutter={true}
+      highlightActiveLine={true}
+      value={props.code}
+      setOptions={{
+        enableSnippets: true,
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        showLineNumbers: true,
+        tabSize: 2,
+      }}
+    />
   );
 };
 
-export default AlgorithmsMenu;
+export default CodeEditor;

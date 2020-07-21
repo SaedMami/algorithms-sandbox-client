@@ -32,12 +32,17 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
 
   return (
     <Grid container direction="column" alignItems="center">
-      <Grid item>
-        <Card>
-          <CardContent>
-            {createRenderer(props.rendererType)(frameToRender)}
-          </CardContent>
-        </Card>
+      <Grid item style={{ width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "2em",
+          }}
+        >
+          {createRenderer(props.rendererType)(frameToRender)}
+        </div>
       </Grid>
 
       <Grid item>

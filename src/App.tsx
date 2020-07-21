@@ -2,11 +2,11 @@ import React from "react";
 import "./App.css";
 import AlgorithmPlayer from "./arch/array/AlgorithmPlayer";
 import AppHeader from "./AppHeader";
-import AlgorithmsMenu from "./CodeEditor";
-import { Grid, Container } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { ArrayTracer } from "./arch/array/ArrayTracer";
 import { id } from "./arch/util.ts/RandomUtils";
 import { CodeBuilder } from "./CodeBuilder";
+import FramesBuilder from "./FramesBuilder";
 
 type AppState = {
   tracer: ArrayTracer | null;
@@ -20,8 +20,36 @@ class App extends React.Component<any, AppState> {
 
   recieveCode = async (code: string) => {
     const tracer = await CodeBuilder.build(code);
-    console.log(tracer);
     this.setState({ tracer });
+  };
+
+  renderAlgorithmPlayer = (tracer: ArrayTracer | null) => {
+    if (tracer) {
+      return (
+        <AlgorithmPlayer
+          frames={tracer.getFrames()}
+          rendererType={tracer.getRendererType()}
+          key={id(tracer)}
+        ></AlgorithmPlayer>
+      );
+    } else {
+      return (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "#DCDCDC",
+            borderRadius: "10px",
+            width: "100%",
+          }}
+        >
+          <Typography variant="subtitle2" gutterBottom>
+            Use the code editor and click "Build" to visualise!
+          </Typography>
+        </div>
+      );
+    }
   };
 
   render() {
@@ -29,37 +57,21 @@ class App extends React.Component<any, AppState> {
     return (
       <div className="App">
         <AppHeader></AppHeader>
-        <Container>
-          <Grid
-            container
-            direction="row"
-            justify="space-around"
-            alignItems="stretch"
-          >
-            <Grid
-              container
-              justify="center"
-              item
-              xs={6}
-              style={{ margin: "5em auto" }}
-            >
-              {tracer && (
-                <AlgorithmPlayer
-                  frames={tracer.getFrames()}
-                  rendererType={tracer.getRendererType()}
-                  key={id(tracer)}
-                ></AlgorithmPlayer>
-              )}
-            </Grid>
-
-            <Grid item xs={3} style={{ margin: "5em auto" }}>
-              <AlgorithmsMenu
-                initCode=""
-                onBuild={this.recieveCode}
-              ></AlgorithmsMenu>
-            </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="stretch"
+          style={{ margin: "4em 0", height: "80vh" }}
+        >
+          <Grid container justify="center" item xs={4}>
+            {this.renderAlgorithmPlayer(tracer)}
           </Grid>
-        </Container>
+
+          <Grid item xs={5}>
+            <FramesBuilder onBuild={this.recieveCode}></FramesBuilder>
+          </Grid>
+        </Grid>
       </div>
     );
   }

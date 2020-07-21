@@ -1,7 +1,12 @@
-import { ArrayTracer } from "./ArrayTracer";
+export const bubbleSort = `
+function swap(array, i, j) {
+  let temp = array[j];
+  array[j] = array[i];
+  array[i] = temp;
+}
 
-export const bubbleSort = (toSort: Array<number>): ArrayTracer => {
-  let data = [...toSort];
+(function main() {
+  let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
   const tracer = new ArrayTracer(data, "dummy");
   const current = tracer.createMarkerTracer("current", "#8594c9");
   const sorted = tracer.createMarkerTracer("sorted", "#9c9594");
@@ -24,11 +29,19 @@ export const bubbleSort = (toSort: Array<number>): ArrayTracer => {
     sorted.mark(data.length - i - 1);
     tracer.capture();
   }
-  return tracer;
-};
+  return tracer;  
+})();
+`;
 
-export const selectionSort = (toSort: Array<number>): ArrayTracer => {
-  let data = [...toSort];
+export const selectionSort = `
+function swap(array, i, j) {
+  let temp = array[j];
+  array[j] = array[i];
+  array[i] = temp;
+}
+
+(function main() {
+  let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
   const tracer = new ArrayTracer(data, "dummy");
   const current = tracer.createMarkerTracer("current", "#8594c9");
   const minMarker = tracer.createMarkerTracer("min", "red");
@@ -61,16 +74,19 @@ export const selectionSort = (toSort: Array<number>): ArrayTracer => {
   sorted.mark(data.length - 1);
   tracer.clearPointer("i");
   tracer.capture();
-  return tracer;
-};
+  return tracer;  
+})();
+`;
 
-export const quickSort = (toSort: Array<number>): ArrayTracer => {
-  const quickSortInternal = (
-    start: number,
-    end: number,
-    data: Array<any>,
-    tracer: ArrayTracer
-  ) => {
+export const quickSort = `
+function swap(array, i, j) {
+  let temp = array[j];
+  array[j] = array[i];
+  array[i] = temp;
+}
+
+(function main() {
+  const quickSortInternal = (start, end) => {
     if (start >= end) {
       return;
     }
@@ -102,6 +118,7 @@ export const quickSort = (toSort: Array<number>): ArrayTracer => {
         tracer.capture();
       }
     }
+    
     current.unmark(i);
     current.unmark(j);
     tracer.capture();
@@ -119,9 +136,9 @@ export const quickSort = (toSort: Array<number>): ArrayTracer => {
 
     quickSortInternal(start, pivotIndex, data, tracer);
     quickSortInternal(pivotIndex + 1, end, data, tracer);
-  };
-
-  const data = [...toSort];
+  };  
+  
+  let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
   const tracer = new ArrayTracer(data, "dummy");
   tracer.capture();
   const current = tracer.createMarkerTracer("current", "#8594c9");
@@ -131,35 +148,11 @@ export const quickSort = (toSort: Array<number>): ArrayTracer => {
   const jPointer = tracer.createPointer("j");
   quickSortInternal(0, data.length, data, tracer);
   return tracer;
-};
+})();
+`;
 
 function swap(array: Array<any>, i: number, j: number) {
   let temp = array[j];
   array[j] = array[i];
   array[i] = temp;
 }
-
-let data = [3, 2, 1];
-const tracer = new ArrayTracer(data, "dummy");
-const current = tracer.createMarkerTracer("current", "#8594c9");
-const sorted = tracer.createMarkerTracer("sorted", "#9c9594");
-tracer.capture();
-
-for (let i = 0; i < data.length; ++i) {
-  for (let j = 0; j < data.length - 1 - i; ++j) {
-    current.mark(j);
-    current.mark(j + 1);
-    tracer.capture();
-    if (data[j] > data[j + 1]) {
-      swap(data, j, j + 1);
-      tracer.capture();
-    }
-    current.unmark(j);
-    tracer.capture();
-  }
-
-  current.unmark(data.length - i - 1);
-  sorted.mark(data.length - i - 1);
-  tracer.capture();
-}
-tracer;
