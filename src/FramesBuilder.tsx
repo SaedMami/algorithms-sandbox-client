@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, Menu, MenuItem } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import BuildIcon from "@material-ui/icons/Build";
 import CodeEditor from "./CodeEditor";
 import AlgorithmsMenu from "./AlgorithmsMenu";

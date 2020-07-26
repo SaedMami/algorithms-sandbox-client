@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
-import ArrayRenderer from "./ArrayRenderer";
+import ArrayRenderer from "../../tracers/array/ArrayRenderer";
 import React from "react";
 import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
 import PauseRoundedIcon from "@material-ui/icons/PauseRounded";
 import FastRewindRoundedIcon from "@material-ui/icons/FastRewindRounded";
 import FastForwardRoundedIcon from "@material-ui/icons/FastForwardRounded";
-import { Card, CardContent, IconButton, Grid } from "@material-ui/core";
-import { ArrayFrame } from "./types/ArrayTypes";
+import { IconButton, Grid } from "@material-ui/core";
+import GraphRenderer from "../../tracers/graph/GraphRenderer";
+import { Frame } from "../../tracers/Frame";
+import { GraphFrame } from "../../tracers/graph/GraphTracer";
+import { ArrayFrame } from "../../tracers/array/ArrayFrames";
 
 export type AlgorithmPlayerProps = {
-  frames: Array<ArrayFrame>;
+  frames: Array<Frame>;
   rendererType: string;
 };
 
@@ -41,7 +44,7 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
             marginTop: "2em",
           }}
         >
-          {createRenderer(props.rendererType)(frameToRender)}
+          {createRenderer(props.rendererType, frameToRender)}
         </div>
       </Grid>
 
@@ -84,8 +87,15 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
   );
 };
 
-const createRenderer = (rendererType: string) => {
-  return ArrayRenderer;
+const createRenderer = (rendererType: string, frame: Frame) => {
+  switch (rendererType) {
+    case "array":
+      return ArrayRenderer(frame as ArrayFrame);
+    case "graph":
+      return GraphRenderer(frame as GraphFrame);
+  }
+
+  throw new Error("Unkown renderer type");
 };
 
 export default AlgorithmPlayer;

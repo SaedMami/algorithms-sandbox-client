@@ -1,11 +1,7 @@
 import React from "react";
 import style from "./ArrayRenderer.module.css";
 import _ from "lodash";
-import {
-  ArrayPointerFrame,
-  ArrayMarkerFrame,
-  ArrayFrame,
-} from "./types/ArrayTypes";
+import { ArrayPointerFrame, ArrayMarkerFrame, ArrayFrame } from "./ArrayFrames";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 
 const ArrayRenderer = (props: ArrayFrame) => {

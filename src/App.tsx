@@ -3,7 +3,7 @@ import "./App.css";
 import AlgorithmPlayer from "./arch/array/AlgorithmPlayer";
 import AppHeader from "./AppHeader";
 import { Grid, Typography } from "@material-ui/core";
-import { ArrayTracer } from "./arch/array/ArrayTracer";
+import { ArrayTracer } from "./tracers/array/ArrayTracer";
 import { id } from "./arch/util.ts/RandomUtils";
 import { CodeBuilder } from "./CodeBuilder";
 import FramesBuilder from "./FramesBuilder";

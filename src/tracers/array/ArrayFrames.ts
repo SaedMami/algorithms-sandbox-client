@@ -1,14 +1,16 @@
-export interface ArrayPointerFrame {
-  position: number;
-}
+import { Frame } from "../Frame";
 
-export interface ArrayMarkerFrame {
+export type ArrayPointerFrame = {
+  position: number;
+};
+
+export type ArrayMarkerFrame = {
   color: string;
   selected: Array<number>;
-}
+};
 
-export interface ArrayFrame {
+export type ArrayFrame = Frame & {
   data: Array<number>;
   pointers: Map<string, ArrayPointerFrame>;
   markers: Map<string, ArrayMarkerFrame>;
-}
+};

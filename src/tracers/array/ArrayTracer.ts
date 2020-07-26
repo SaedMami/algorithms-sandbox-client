@@ -1,23 +1,16 @@
-import {
-  ArrayFrame,
-  ArrayPointerFrame,
-  ArrayMarkerFrame,
-} from "./types/ArrayTypes";
+import { ArrayFrame, ArrayPointerFrame, ArrayMarkerFrame } from "./ArrayFrames";
 
 import _ from "lodash";
 
 export class ArrayTracer {
-  private frames: Array<ArrayFrame>;
+  private frames = new Array<ArrayFrame>();
   private data: Array<number>;
   private rendererType: string;
-  private currentPointers: Map<string, ArrayPointerFrame>;
-  private currentMarkers: Map<string, ArrayMarkerFrame>;
+  private currentPointers = new Map<string, ArrayPointerFrame>();
+  private currentMarkers = new Map<string, ArrayMarkerFrame>();
 
   constructor(data: Array<number>, renderer: string) {
     this.data = data;
-    this.currentPointers = new Map<string, ArrayPointerFrame>();
-    this.currentMarkers = new Map<string, ArrayMarkerFrame>();
-    this.frames = new Array<ArrayFrame>();
     this.rendererType = renderer;
   }
 
