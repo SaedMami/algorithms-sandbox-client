@@ -1,8 +1,9 @@
 import { ArrayFrame, ArrayPointerFrame, ArrayMarkerFrame } from "./ArrayFrames";
 
 import _ from "lodash";
+import { Tracer } from "../Tracer";
 
-export class ArrayTracer {
+export class ArrayTracer implements Tracer {
   private frames = new Array<ArrayFrame>();
   private data: Array<number>;
   private rendererType: string;

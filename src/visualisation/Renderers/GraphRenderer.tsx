@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { DataSet, Network } from "vis-network/standalone";
-import { GraphFrame } from "./GraphTracer";
+import { GraphFrame } from "../../tracers/graph/GraphFrames";
 
 const GraphRenderer = (props: GraphFrame) => {
   const graphEl = useRef<HTMLDivElement>(null);

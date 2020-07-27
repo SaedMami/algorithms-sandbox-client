@@ -1,80 +1,39 @@
-import React from "react";
-import "./App.css";
-import AlgorithmPlayer from "./arch/array/AlgorithmPlayer";
+import React, { useState } from "react";
 import AppHeader from "./AppHeader";
-import { Grid, Typography } from "@material-ui/core";
-import { ArrayTracer } from "./tracers/array/ArrayTracer";
-import { id } from "./arch/util.ts/RandomUtils";
-import { CodeBuilder } from "./CodeBuilder";
-import FramesBuilder from "./FramesBuilder";
+import { Grid } from "@material-ui/core";
+import { CodeBuilder } from "./visualisation/FrameGeneration/CodeBuilder";
+import FramesBuilder from "./visualisation/FrameGeneration/FramesBuilder";
+import { Tracer } from "./tracers/Tracer";
+import VisualisationSpace from "./visualisation/VisualisationSpace";
 
-type AppState = {
-  tracer: ArrayTracer | null;
-};
+export const App = () => {
+  const [tracer, setTracer] = useState<Tracer>();
 
-class App extends React.Component<any, AppState> {
-  constructor(props: any) {
-    super(props);
-    this.state = { tracer: null };
-  }
-
-  recieveCode = async (code: string) => {
+  const recieveCode = async (code: string) => {
     const tracer = await CodeBuilder.build(code);
-    this.setState({ tracer });
+    setTracer(tracer);
   };
 
-  renderAlgorithmPlayer = (tracer: ArrayTracer | null) => {
-    if (tracer) {
-      return (
-        <AlgorithmPlayer
-          frames={tracer.getFrames()}
-          rendererType={tracer.getRendererType()}
-          key={id(tracer)}
-        ></AlgorithmPlayer>
-      );
-    } else {
-      return (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "#DCDCDC",
-            borderRadius: "10px",
-            width: "100%",
-          }}
-        >
-          <Typography variant="subtitle2" gutterBottom>
-            Use the code editor and click "Build" to visualise!
-          </Typography>
-        </div>
-      );
-    }
-  };
-
-  render() {
-    const { tracer } = this.state;
-    return (
-      <div className="App">
-        <AppHeader></AppHeader>
-        <Grid
-          container
-          direction="row"
-          justify="space-evenly"
-          alignItems="stretch"
-          style={{ margin: "4em 0", height: "80vh" }}
-        >
-          <Grid container justify="center" item xs={4}>
-            {this.renderAlgorithmPlayer(tracer)}
-          </Grid>
-
-          <Grid item xs={5}>
-            <FramesBuilder onBuild={this.recieveCode}></FramesBuilder>
-          </Grid>
+  return (
+    <div className="App">
+      <AppHeader></AppHeader>
+      <Grid
+        container
+        direction="row"
+        justify="space-evenly"
+        alignItems="stretch"
+        style={{ margin: "4em 0", height: "80vh" }}
+      >
+        <Grid container justify="center" item xs={4}>
+          <VisualisationSpace tracer={tracer}></VisualisationSpace>
         </Grid>
-      </div>
-    );
-  }
-}
+
+        <Grid item xs={5}>
+          <FramesBuilder onBuild={recieveCode}></FramesBuilder>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
 
 export default App;

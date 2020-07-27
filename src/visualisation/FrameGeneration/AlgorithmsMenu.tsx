@@ -4,7 +4,7 @@ import {
   bubbleSort,
   selectionSort,
   quickSort,
-} from "./algorithms/ArrayAlgorithms";
+} from "../../algorithms/ArrayAlgorithms";
 
 export type AlgorithmsMenuProps = {
   onAlgorithmSelected: (code: string) => void;

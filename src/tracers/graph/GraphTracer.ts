@@ -1,15 +1,5 @@
 import { Graph } from "./Graph";
-import { Frame } from "../Frame";
-
-export type GraphFrame = Frame & {
-  graph: [number, number[]][];
-  //visited: Array<boolean>;
-};
-
-export type NodeMarkerFrame = {
-  //color: string;
-  //selected: Array<number>;
-};
+import { GraphFrame } from "./GraphFrames";
 
 export class GraphTracer {
   private graph: Graph;

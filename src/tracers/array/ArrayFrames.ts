@@ -1,5 +1,3 @@
-import { Frame } from "../Frame";
-
 export type ArrayPointerFrame = {
   position: number;
 };
@@ -9,7 +7,7 @@ export type ArrayMarkerFrame = {
   selected: Array<number>;
 };
 
-export type ArrayFrame = Frame & {
+export type ArrayFrame = {
   data: Array<number>;
   pointers: Map<string, ArrayPointerFrame>;
   markers: Map<string, ArrayMarkerFrame>;
