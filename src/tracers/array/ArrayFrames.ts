@@ -7,8 +7,12 @@ export type ArrayMarkerFrame = {
   selected: Array<number>;
 };
 
-export type ArrayFrame = {
+export class ArrayFrame  {
+  constructor(data: Array<number>) {
+    this.data = data;
+  }
+  
   data: Array<number>;
-  pointers: Map<string, ArrayPointerFrame>;
-  markers: Map<string, ArrayMarkerFrame>;
+  pointers: Map<string, ArrayPointerFrame> = new Map();
+  markers: Map<string, ArrayMarkerFrame> = new Map();
 };

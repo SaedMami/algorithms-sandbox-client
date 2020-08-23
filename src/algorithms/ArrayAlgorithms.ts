@@ -7,7 +7,7 @@ function swap(array, i, j) {
 
 (function main() {
   let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
-  const tracer = new ArrayTracer(data, "dummy");
+  const tracer = new ArrayTracer(data, "array");
   const current = tracer.createMarkerTracer("current", "#8594c9");
   const sorted = tracer.createMarkerTracer("sorted", "#9c9594");
   tracer.capture();
@@ -42,7 +42,7 @@ function swap(array, i, j) {
 
 (function main() {
   let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
-  const tracer = new ArrayTracer(data, "dummy");
+  const tracer = new ArrayTracer(data, "array");
   const current = tracer.createMarkerTracer("current", "#8594c9");
   const minMarker = tracer.createMarkerTracer("min", "red");
   const sorted = tracer.createMarkerTracer("sorted", "grey");
@@ -139,7 +139,7 @@ function swap(array, i, j) {
   };  
   
   let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
-  const tracer = new ArrayTracer(data, "dummy");
+  const tracer = new ArrayTracer(data, "array");
   tracer.capture();
   const current = tracer.createMarkerTracer("current", "#8594c9");
   const pivotMarker = tracer.createMarkerTracer("pivot", "red");
@@ -150,9 +150,3 @@ function swap(array, i, j) {
   return tracer;
 })();
 `;
-
-function swap(array: Array<any>, i: number, j: number) {
-  let temp = array[j];
-  array[j] = array[i];
-  array[i] = temp;
-}
