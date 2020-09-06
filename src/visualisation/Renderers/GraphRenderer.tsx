@@ -40,12 +40,8 @@ const GraphRenderer = ({ frame }: props) => {
         },
       },
       layout: {
-        randomSeed: 123,
+        randomSeed: 666,
         improvedLayout: true,
-        hierarchical: {
-          direction: "LR", // UD, DU, LR, RL
-          sortMethod: "directed", // hubsize, directed
-        },
       },
     };
 
