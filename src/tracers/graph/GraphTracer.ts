@@ -1,35 +1,48 @@
-import { Graph } from "./Graph";
-import { GraphFrame } from "./GraphFrames";
+import { GraphFrame, NodeMarkerFrame } from "./GraphFrames";
 
 export class GraphTracer {
-  private graph: Graph;
   private frames = new Array<GraphFrame>();
+  private referenceFrame: GraphFrame;
 
-  constructor(graph: Graph) {
-    this.graph = graph;
+  constructor(graphList: Map<number, Array<number>>) {
+    this.referenceFrame = new GraphFrame(graphList);
     this.capture();
   }
 
   capture() {
-    this.frames.push({
-      graph: this.copyGraphFrame(this.graph.getAdjacencyList()),
-    });
+    this.frames.push(GraphFrame.copyOf(this.referenceFrame));
   }
 
-  getFrames() {
+  getFrames(): Array<GraphFrame> {
     return this.frames;
   }
 
-  getRendererType() {
+  getRendererType(): string {
     return "graph";
   }
 
-  private copyGraphFrame(graph: Map<number, number[]>) {
-    const copied: [number, number[]][] = [];
-    graph.forEach((edges, index) => {
-      copied.push([index, [...edges]]);
-    });
+  createNodeMarkerControl(key: string, color: string) {
+    const frame = new NodeMarkerFrame(
+      color,
+      this.referenceFrame.graphList.size
+    );
+    this.referenceFrame.markers.set(key, frame);
+    return new NodeMarkerControl(frame);
+  }
+}
 
-    return copied;
+export class NodeMarkerControl {
+  private frame: NodeMarkerFrame;
+
+  constructor(frame: NodeMarkerFrame) {
+    this.frame = frame;
+  }
+
+  mark(position: number) {
+    this.frame.selected[position] = 1;
+  }
+
+  unmark(position: number) {
+    this.frame.selected[position] = 0;
   }
 }

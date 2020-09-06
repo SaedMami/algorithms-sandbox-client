@@ -8,13 +8,17 @@ import {
 } from "../../tracers/array/ArrayFrames";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 
-const ArrayRenderer = (props: ArrayFrame) => {
+type props = {
+  frame: ArrayFrame;
+};
+
+const ArrayRenderer = ({ frame }: props) => {
   return (
     <table className={style.table}>
       <tbody>
-        {RenderArrayIndecies(props.data.length)}
-        {RenderArrayValues(props.data, props.markers)}
-        {RenderArrayPointers(props.data.length, props.pointers)}
+        {RenderArrayIndecies(frame.data.length)}
+        {RenderArrayValues(frame.data, frame.markers)}
+        {RenderArrayPointers(frame.data.length, frame.pointers)}
       </tbody>
     </table>
   );

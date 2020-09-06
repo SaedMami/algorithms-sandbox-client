@@ -12,8 +12,8 @@ const initCode = `(
     // A function that returns a tracer object    
     function main() {
       let data = [1,2,3,4,5];
-      const tracer = new ArrayTracer(data, "dummy");
-      const pointer = tracer.createPointer("p1");
+      const tracer = new ArrayTracer(data, "array");
+      const pointer = tracer.createPointerControl("p1");
       tracer.capture();
       pointer.point(0);
       tracer.capture();

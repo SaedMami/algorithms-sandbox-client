@@ -1,16 +1,16 @@
 import { ArrayFrame, ArrayPointerFrame, ArrayMarkerFrame } from "./ArrayFrames";
 
-import _ from "lodash";
 import { Tracer } from "../Tracer";
 
 export class ArrayTracer implements Tracer {
   private frames = new Array<ArrayFrame>();
-  private currentFrame: ArrayFrame;
+  private referenceFrame: ArrayFrame;
   private rendererType: string;
 
   constructor(data: Array<number>, renderer: string) {
-    this.currentFrame = new ArrayFrame(data);
+    this.referenceFrame = new ArrayFrame(data);
     this.rendererType = renderer;
+    this.capture();
   }
 
   getRendererType() {
@@ -22,34 +22,27 @@ export class ArrayTracer implements Tracer {
   }
 
   capture() {
-    this.frames.push({
-      data: [...this.currentFrame.data],
-      pointers: _.cloneDeep(this.currentFrame.pointers),
-      markers: _.cloneDeep(this.currentFrame.markers)
-    });
+    this.frames.push(ArrayFrame.copyOf(this.referenceFrame));
   }
 
-  createMarkerTracer(key: string, color: string) {
-    const frame: ArrayMarkerFrame = {
-      color: color,
-      selected: new Array<number>(this.currentFrame.data.length).fill(0),
-    };
-    this.currentFrame.markers.set(key, frame);
-    return new ArrayMarker(frame);
+  createMarkerControl(key: string, color: string) {
+    const frame = new ArrayMarkerFrame(color, this.referenceFrame.data.length);
+    this.referenceFrame.markers.set(key, frame);
+    return new ArrayMarkerControl(frame);
   }
 
-  createPointer(key: string) {
-    const frame: ArrayPointerFrame = { position: -1 };
-    this.currentFrame.pointers.set(key, frame);
-    return new ArrayPointer(frame);
+  createPointerControl(key: string) {
+    const frame = new ArrayPointerFrame();
+    this.referenceFrame.pointers.set(key, frame);
+    return new ArrayPointerControl(frame);
   }
 
   clearPointer(key: string) {
-    this.currentFrame.pointers.delete(key);
+    this.referenceFrame.pointers.delete(key);
   }
 }
 
-export class ArrayMarker {
+export class ArrayMarkerControl {
   private frame: ArrayMarkerFrame;
 
   constructor(frame: ArrayMarkerFrame) {
@@ -65,7 +58,7 @@ export class ArrayMarker {
   }
 }
 
-export class ArrayPointer {
+export class ArrayPointerControl {
   private frame: ArrayPointerFrame;
 
   constructor(frame: ArrayPointerFrame) {

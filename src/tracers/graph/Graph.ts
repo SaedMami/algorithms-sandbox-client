@@ -1,21 +1,32 @@
 export class Graph {
-  private adjacencyList = new Map<number, Array<number>>();
+  adjacencyList = new Map<number, Array<number>>();
 
-  constructor(nodeCount: number, edges: Array<[number, number]>) {
+  constructor(nodeCount: number) {
     Array.from(Array(nodeCount).keys()).forEach((number) =>
       this.adjacencyList.set(number, [])
     );
-    edges.forEach((edge) => {
-      this.addEdge(edge[0], edge[1]);
+  }
+
+  public static copyOf(other: Graph): Graph {
+    const adjacencyListCopy = new Map<number, Array<number>>();
+
+    other.adjacencyList.forEach((edges, index) => {
+      adjacencyListCopy.set(index, [...edges]);
+    });
+
+    const graphCopy = new Graph(other.count());
+    graphCopy.adjacencyList = adjacencyListCopy;
+    return graphCopy;
+  }
+
+  public addEdges(edges: [[number, number]]) {
+    edges.forEach(([from, to]) => {
+      let v = this.adjacencyList.get(from);
+      v?.push(to);
     });
   }
 
-  public addEdge(from: number, to: number) {
-    let v = this.adjacencyList.get(from);
-    v?.push(to);
-  }
-
-  public getAdjacencyList() {
-    return this.adjacencyList;
+  public count(): number {
+    return this.adjacencyList.size;
   }
 }

@@ -6,17 +6,17 @@ import FastForwardRoundedIcon from "@material-ui/icons/FastForwardRounded";
 import { IconButton, Grid } from "@material-ui/core";
 import { makeRenderer } from "./RendererFactory";
 
-export type AlgorithmPlayerProps = {
+type props = {
   frames: Array<any>;
   rendererType: string;
 };
 
-const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
+const AlgorithmPlayer = ({ frames, rendererType }: props) => {
   const [currentFrame, setCurrentFrame] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isPlaying && currentFrame < props.frames.length - 1) {
+    if (isPlaying && currentFrame < frames.length - 1) {
       const timeout = setTimeout(() => {
         setCurrentFrame(currentFrame + 1);
       }, 100);
@@ -24,9 +24,9 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
     } else {
       setIsPlaying(false);
     }
-  }, [currentFrame, isPlaying, props.frames.length]);
+  }, [currentFrame, isPlaying, frames.length]);
 
-  const frameToRender = props.frames[currentFrame];
+  const frameToRender = frames[currentFrame];
 
   return (
     <Grid container direction="column" alignItems="center">
@@ -39,7 +39,7 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
             marginTop: "2em",
           }}
         >
-          {makeRenderer(props.rendererType)(frameToRender)}
+          {makeRenderer(rendererType, frameToRender)}
         </div>
       </Grid>
 
@@ -59,7 +59,7 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
                 setIsPlaying(false);
               } else {
                 setIsPlaying(true);
-                if (currentFrame === props.frames.length - 1) {
+                if (currentFrame === frames.length - 1) {
                   setCurrentFrame(0);
                 }
               }
@@ -69,9 +69,7 @@ const AlgorithmPlayer = (props: AlgorithmPlayerProps) => {
           </IconButton>
           <IconButton
             onClick={() => {
-              setCurrentFrame(
-                Math.min(currentFrame + 1, props.frames.length - 1)
-              );
+              setCurrentFrame(Math.min(currentFrame + 1, frames.length - 1));
             }}
           >
             <FastForwardRoundedIcon />

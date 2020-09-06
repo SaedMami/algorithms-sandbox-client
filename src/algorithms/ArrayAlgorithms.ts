@@ -8,8 +8,8 @@ function swap(array, i, j) {
 (function main() {
   let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
   const tracer = new ArrayTracer(data, "array");
-  const current = tracer.createMarkerTracer("current", "#8594c9");
-  const sorted = tracer.createMarkerTracer("sorted", "#9c9594");
+  const current = tracer.createMarkerControl("current", "#8594c9");
+  const sorted = tracer.createMarkerControl("sorted", "#9c9594");
   tracer.capture();
 
   for (let i = 0; i < data.length; ++i) {
@@ -43,10 +43,10 @@ function swap(array, i, j) {
 (function main() {
   let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
   const tracer = new ArrayTracer(data, "array");
-  const current = tracer.createMarkerTracer("current", "#8594c9");
-  const minMarker = tracer.createMarkerTracer("min", "red");
-  const sorted = tracer.createMarkerTracer("sorted", "grey");
-  const currentPointer = tracer.createPointer("i");
+  const current = tracer.createMarkerControl("current", "#8594c9");
+  const minMarker = tracer.createMarkerControl("min", "red");
+  const sorted = tracer.createMarkerControl("sorted", "grey");
+  const currentPointer = tracer.createPointerControl("i");
   tracer.capture();
   for (let i = 0; i < data.length - 1; ++i) {
     current.mark(i);
@@ -141,11 +141,11 @@ function swap(array, i, j) {
   let data = [4, 9, 7, 23, 9, 37, 49, 2, 0, 11];
   const tracer = new ArrayTracer(data, "array");
   tracer.capture();
-  const current = tracer.createMarkerTracer("current", "#8594c9");
-  const pivotMarker = tracer.createMarkerTracer("pivot", "red");
-  const doneMarker = tracer.createMarkerTracer("done", "green");
-  const iPointer = tracer.createPointer("i");
-  const jPointer = tracer.createPointer("j");
+  const current = tracer.createMarkerControl("current", "#8594c9");
+  const pivotMarker = tracer.createMarkerControl("pivot", "red");
+  const doneMarker = tracer.createMarkerControl("done", "green");
+  const iPointer = tracer.createPointerControl("i");
+  const jPointer = tracer.createPointerControl("j");
   quickSortInternal(0, data.length, data, tracer);
   return tracer;
 })();

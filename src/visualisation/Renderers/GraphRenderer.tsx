@@ -2,15 +2,19 @@ import React, { useRef, useEffect } from "react";
 import { DataSet, Network } from "vis-network/standalone";
 import { GraphFrame } from "../../tracers/graph/GraphFrames";
 
-const GraphRenderer = (props: GraphFrame) => {
+type props = {
+  frame: GraphFrame;
+};
+
+const GraphRenderer = ({ frame }: props) => {
   const graphEl = useRef<HTMLDivElement>(null);
 
   var nodes = new Array<Object>();
   var edges = new Array<Object>();
 
-  Array.from(props.graph).forEach(([nodeId, nodeEdges]) => {
+  Array.from(frame.graphList).forEach(([nodeId, nodeEdges]) => {
     nodes.push({ id: nodeId, label: String(nodeId) });
-    nodeEdges.forEach((edge, index) => {
+    nodeEdges.forEach((edge) => {
       edges.push({ from: nodeId, to: edge });
     });
   });
