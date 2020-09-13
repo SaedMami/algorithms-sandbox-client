@@ -21,9 +21,13 @@ export class Graph {
 
   public addEdges(edges: [[number, number]]) {
     edges.forEach(([from, to]) => {
-      let v = this.adjacencyList.get(from);
-      v?.push(to);
+      this.addEdge(from, to);
+      this.addEdge(to, from);
     });
+  }
+
+  public addEdge(from:number, to:number) {
+    this.adjacencyList.get(from)?.push(to);
   }
 
   public count(): number {

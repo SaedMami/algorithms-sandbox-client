@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { DataSet, Network } from "vis-network/standalone";
+import { DataSet, Network, Node, Edge } from "vis-network/standalone";
 import { GraphFrame, NodeMarkerFrame } from "../../tracers/graph/GraphFrames";
+import _ from "lodash";
 
 type props = {
   frame: GraphFrame;
@@ -9,8 +10,8 @@ type props = {
 const GraphRenderer = ({ frame }: props) => {
   const graphEl = useRef<HTMLDivElement>(null);
 
-  var nodes = new Array<Object>();
-  var edges = new Array<Object>();
+  var nodes = new Array<Node>();
+  var edges = new Array<Edge>();
 
   Array.from(frame.graphList).forEach(([nodeId, nodeEdges]) => {
     nodes.push({
@@ -19,7 +20,9 @@ const GraphRenderer = ({ frame }: props) => {
       color: getNodeColor(frame.markers, nodeId),
     });
     nodeEdges.forEach((edge) => {
-      edges.push({ from: nodeId, to: edge });
+      if (!nodes.find(node => node.id === edge)) {
+        edges.push({ from: nodeId, to: edge });
+      }
     });
   });
 
@@ -53,19 +56,13 @@ const GraphRenderer = ({ frame }: props) => {
   return <div style={{ width: "100%", height: "70vh" }} ref={graphEl}></div>;
 };
 
-const getNodeColor = (markers: Map<string, NodeMarkerFrame>, index: number) => {
-  // return the first applicable color for the node
-  const it = markers.values();
-  let marker = it.next();
-  while (!marker.done) {
-    if (marker.value.selected[index] === 1) {
-      return marker.value.color;
-    }
-    marker = it.next();
-  }
+const getNodeColor = (markers: Map<string, NodeMarkerFrame>, index: number): string | undefined => {
+  // return the last applicable color for the node
+  const appliedMarker = _.findLast(Array.from(markers.values()), (frame) => {
+    return frame.selected[index] === 1;
+  });
 
-  // no marker found for this element
-  return null;
+  return appliedMarker?.color;
 };
 
 export default GraphRenderer;
