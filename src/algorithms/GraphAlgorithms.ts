@@ -1,6 +1,6 @@
+export const DFS = `
 // A function that returns a tracer object
 (function main() {
-  // eslint-disable-next-line no-undef
   let graph = new Graph(10);
   graph.addEdges([
     [0, 2],
@@ -15,7 +15,6 @@
     [2, 7]
   ]);
 
-  // eslint-disable-next-line no-undef
   const tracer = new GraphTracer(graph.adjacencyList);
 
   const visitedMarker = tracer.createNodeMarkerControl("visited", "red");
@@ -54,3 +53,4 @@
 
   return tracer;
 })();
+`; 

@@ -6,6 +6,8 @@ import {
   quickSort,
 } from "../../algorithms/ArrayAlgorithms";
 
+import {DFS} from "../../algorithms/GraphAlgorithms"
+
 export type AlgorithmsMenuProps = {
   onAlgorithmSelected: (code: string) => void;
 };
@@ -14,6 +16,7 @@ const algorithms = new Map();
 algorithms.set("Bubble Sort", bubbleSort);
 algorithms.set("Selection Sort", selectionSort);
 algorithms.set("Quick Sort", quickSort);
+algorithms.set("DFS", DFS);
 
 const AlgorithmsMenu = (props: AlgorithmsMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
