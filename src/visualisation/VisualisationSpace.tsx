@@ -1,24 +1,17 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import AlgorithmPlayer from "./Player/AlgorithmPlayer";
-import { Tracer } from "../tracers/Tracer";
-import { id } from "../Utils";
+import { AnimationCommand } from "../api/AnimationCommand";
 
 export type props = {
-  tracer: Tracer | undefined;
+  animationCommand: AnimationCommand | undefined;
 };
 
-const VisualisationSpace = (props: props) => {
-  return renderAlgorithmPlayer(props.tracer);
-};
-
-const renderAlgorithmPlayer = (tracer: Tracer | undefined) => {
-  if (tracer !== undefined) {
+const VisualisationSpace = ({animationCommand}: props) => {
+  if (animationCommand !== undefined) {
     return (
       <AlgorithmPlayer
-        frames={tracer.getFrames()}
-        rendererType={tracer.getRendererType()}
-        key={id(tracer)}
+        animationCommand={animationCommand}
       ></AlgorithmPlayer>
     );
   } else {

@@ -1,7 +1,5 @@
+import { AnimationCommand } from './../api/AnimationCommand';
 export interface Tracer {
-  getRendererType(): string;
-
-  getFrames(): Array<any>;
-
   capture(): void;
+  animationCommand() : AnimationCommand;
 }

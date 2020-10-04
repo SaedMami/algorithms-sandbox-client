@@ -29,7 +29,7 @@ function swap(array, i, j) {
     sorted.mark(data.length - i - 1);
     tracer.capture();
   }
-  return tracer;  
+  return tracer.animationCommand();  
 })();
 `;
 
@@ -74,7 +74,7 @@ function swap(array, i, j) {
   sorted.mark(data.length - 1);
   tracer.clearPointer("i");
   tracer.capture();
-  return tracer;  
+  return tracer.animationCommand();  
 })();
 `;
 
@@ -147,6 +147,6 @@ function swap(array, i, j) {
   const iPointer = tracer.createPointerControl("i");
   const jPointer = tracer.createPointerControl("j");
   quickSortInternal(0, data.length, data, tracer);
-  return tracer;
+  return tracer.animationCommand();
 })();
 `;

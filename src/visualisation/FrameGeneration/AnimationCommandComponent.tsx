@@ -3,9 +3,11 @@ import { Button, Grid } from "@material-ui/core";
 import BuildIcon from "@material-ui/icons/Build";
 import CodeEditor from "./CodeEditor";
 import AlgorithmsMenu from "./AlgorithmsMenu";
+import { CodeBuilder } from "../../api/CodeBuilder";
+import { AnimationCommand } from "../../api/AnimationCommand";
 
-export type FrameBuilderProps = {
-  onBuild: (code: string) => Promise<void>;
+export type props = {
+  setAnimationCommand: (command: AnimationCommand) => void;
 };
 
 const initCode = `(
@@ -17,11 +19,18 @@ const initCode = `(
       tracer.capture();
       pointer.point(0);
       tracer.capture();
-      return tracer;
+      return tracer.animationCommand();
     }
   )();`;
 
-const FramesBuilder = (props: FrameBuilderProps) => {
+
+const AnimationCommandComponent = ({setAnimationCommand} : props) => {
+  const buildCode = async (code: string) => {
+    const command = await CodeBuilder.build(code);
+    console.log({command})
+     setAnimationCommand(command);
+  };
+
   const [code, setCode] = useState(initCode);
 
   return (
@@ -43,7 +52,7 @@ const FramesBuilder = (props: FrameBuilderProps) => {
           variant="contained"
           color="primary"
           startIcon={<BuildIcon />}
-          onClick={() => props.onBuild(code)}
+          onClick={() => buildCode(code)}
         >
           Build
         </Button>
@@ -55,4 +64,4 @@ const FramesBuilder = (props: FrameBuilderProps) => {
   );
 };
 
-export default FramesBuilder;
+export default AnimationCommandComponent;

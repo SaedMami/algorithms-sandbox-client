@@ -51,6 +51,6 @@ export const DFS = `
     visitedMarker.mark(index);
   }
 
-  return tracer;
+  return tracer.animationCommand();
 })();
 `; 

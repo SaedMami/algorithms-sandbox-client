@@ -1,3 +1,4 @@
+import { AnimationCommand } from './../../api/AnimationCommand';
 import { ArrayFrame, ArrayPointerFrame, ArrayMarkerFrame } from "./ArrayFrames";
 
 import { Tracer } from "../Tracer";
@@ -13,16 +14,15 @@ export class ArrayTracer implements Tracer {
     this.capture();
   }
 
-  getRendererType() {
-    return this.rendererType;
-  }
-
-  getFrames() {
-    return this.frames;
-  }
-
   capture() {
     this.frames.push(ArrayFrame.copyOf(this.referenceFrame));
+  }
+
+  animationCommand():AnimationCommand {
+    return {
+      rendererType: this.rendererType, 
+      frames: this.frames,
+    }
   }
 
   createMarkerControl(key: string, color: string) {

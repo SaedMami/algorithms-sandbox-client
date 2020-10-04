@@ -5,15 +5,22 @@ import FastRewindRoundedIcon from "@material-ui/icons/FastRewindRounded";
 import FastForwardRoundedIcon from "@material-ui/icons/FastForwardRounded";
 import { IconButton, Grid } from "@material-ui/core";
 import { makeRenderer } from "./RendererFactory";
+import { AnimationCommand } from "../../api/AnimationCommand";
 
 type props = {
-  frames: Array<any>;
-  rendererType: string;
+  animationCommand: AnimationCommand
 };
 
-const AlgorithmPlayer = ({ frames, rendererType }: props) => {
+const AlgorithmPlayer = ({ animationCommand }: props) => {
   const [currentFrame, setCurrentFrame] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCurrentFrame(0);
+    setIsPlaying(false);
+  }, [animationCommand])
+
+  const {frames, rendererType} = animationCommand;
 
   useEffect(() => {
     if (isPlaying && currentFrame < frames.length - 1) {
@@ -24,7 +31,7 @@ const AlgorithmPlayer = ({ frames, rendererType }: props) => {
     } else {
       setIsPlaying(false);
     }
-  }, [currentFrame, isPlaying, frames.length]);
+  }, [isPlaying, currentFrame, frames.length]);
 
   const frameToRender = frames[currentFrame];
 

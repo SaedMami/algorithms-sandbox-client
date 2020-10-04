@@ -1,3 +1,4 @@
+import { AnimationCommand } from './../../api/AnimationCommand';
 import { GraphFrame, NodeMarkerFrame } from "./GraphFrames";
 
 export class GraphTracer {
@@ -13,12 +14,11 @@ export class GraphTracer {
     this.frames.push(GraphFrame.copyOf(this.referenceFrame));
   }
 
-  getFrames(): Array<GraphFrame> {
-    return this.frames;
-  }
-
-  getRendererType(): string {
-    return "graph";
+  animationCommand(): AnimationCommand {
+    return {
+      rendererType: "graph",
+      frames: this.frames,
+    }
   }
 
   createNodeMarkerControl(key: string, color: string) {
